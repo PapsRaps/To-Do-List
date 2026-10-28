@@ -11,6 +11,8 @@
     <title>To Do List</title>
   </head>
   <body>
+    <div class="decoration1"></div>
+    <div class="decoration2"></div>
     <div id="container">
       <div id="sidebar">
         <div id="sidebarLogo">
@@ -24,17 +26,15 @@
 
 
       <div id="body">
-        <div class="decoration1"></div>
-        <div class="decoration2"></div>
         <div id="titleContainer">
           <h1><i class="fa-solid fa-folder-open"></i><span id="projectTitleName">Personal</span></h1>
           <p>Fill the form to add your task and manage them below.</p>
         </div>
         <div id="containerButtons">
-            <button id="allButtonContainer" class="selected">All</button>
-            <button id="activeButtonContainer">Active</button>
-            <button id="completedButtonContainer">Completed</button>
-          </div>
+          <button id="allButtonContainer" class="selected">All</button>
+          <button id="activeButtonContainer">Active</button>
+          <button id="completedButtonContainer">Completed</button>
+        </div>
         <div id="taskContainer">
           <h2>Your Tasks</h2>
           <div id="tasks">
@@ -116,7 +116,7 @@
           <h2>Add a new task</h2>
           <form id="addTaskForm">
             <div class="formCol">
-              <label for="taskTitle">Title <span class="required">*</span></label>
+              <label for="taskTitle">Name <span class="required">*</span></label>
               <input type="text" required placeholder="e.g. Finish project report" id="taskTitle" maxlength="20">
             </div>
             <div class="formCol">
@@ -125,7 +125,7 @@
             </div>
             <div class="formCol">
               <label for="taskDueDate">Due Date</label>
-              <input type="date" placeholder="e.g. Finish project report" id="taskTitle">
+              <input type="date" id="taskDueDate">
             </div>
             <div class="formCol">
               <label for="taskPriority">Priority <span class="required">*</span></label>

@@ -59,17 +59,26 @@ export default class Project{
         return [...this.#tasks];
     }
 
-    updateTask(index, newName, newDesc, newDueDate, newPrio){
-        if(index < 0 || index > this.#tasks.length - 1)return;
+    getTaskIndex(taskId) {
+        return this.#tasks.findIndex(task => task.taskId === taskId);
+    }
+
+    updateTask(taskId, newName, newDesc, newDueDate, newPrio) {
+        const index = this.getTaskIndex(taskId);
+
+        if (index === -1) return;
+
         this.#tasks[index].taskName = newName;
         this.#tasks[index].taskDesc = newDesc;
         this.#tasks[index].taskDueDate = newDueDate;
         this.#tasks[index].taskPrio = newPrio;
     }
 
-    removeTask(index){
-        if(index < 0 || index > this.#tasks.length - 1)return;
-        this.#tasks.splice(index,1)
-    }
+    removeTask(taskId) {
+        const index = this.getTaskIndex(taskId);
 
+        if (index === -1) return;
+
+        this.#tasks.splice(index, 1);
+    }
 }

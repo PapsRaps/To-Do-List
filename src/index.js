@@ -1,7 +1,10 @@
 import "./reset.css";
 import "./styles.css";
 
+import {format} from 'date-fns';
+
 import Project from './modules/project.js'
+
 
 const todoList = (()=>{
     let projects = [];
@@ -108,6 +111,7 @@ const domController = (()=>{
             const checkBox = document.createElement('input');
             checkBox.id = task.taskId;
             checkBox.type = 'checkbox'
+            checkBox.addEventListener('click',(event)=>toggleStatusTask(event))
 
             const label = document.createElement('label');
             label.htmlFor = task.taskId;
@@ -137,10 +141,13 @@ const domController = (()=>{
             const deleteIcon = document.createElement('div');
             deleteIcon.className = 'deleteTask';
             deleteIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`
+            deleteIcon.addEventListener('click',(event)=>deleteTask(event))
 
             taskCard.append(checkBox, label, taskDueDate, prioContainer, deleteIcon);
 
             taskContainer.appendChild(taskCard);
+
+            updateTaskStatusDisplay(task.taskId)
         })
     }
 
@@ -156,11 +163,69 @@ const domController = (()=>{
         })
     }
 
+    function addTask(event){
+        event.preventDefault();
+        const taskName = document.getElementById('taskTitle').value;
+        const taskDescription = document.getElementById('taskDescription').value;
+        let taskDueDate = document.getElementById('taskDueDate').value;
+        const taskPriority = document.getElementById('taskPriority').value;
+
+        if(taskDueDate !== ''){
+            taskDueDate = format(taskDueDate, `MMM d, yyyy`)
+        };
+
+        todoList.getProject().createTask(taskName,taskDescription,taskDueDate,taskPriority)
+
+        changeTaskDisplay();
+
+        event.target.reset();
+    }
+
+    function toggleStatusTask(event){
+        const taskIndex = todoList.getProject().getTaskIndex(event.currentTarget.id);
+        todoList.getProject().getTasks()[taskIndex].toggleStatus();
+
+        updateTaskStatusDisplay(event.currentTarget.id)
+        console.log(todoList.getProject().getTasks()[taskIndex].status)
+    }
+
+    function updateTaskStatusDisplay(id){
+        const checkBox = document.getElementById(id);
+        const taskName = checkBox.nextElementSibling.firstElementChild;
+        const taskDesc = checkBox.nextElementSibling.lastElementChild;
+        const taskDueDate = checkBox.nextElementSibling.nextElementSibling;
+        const taskPrio = checkBox.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild;
+        const currentTaskIndex = todoList.getProject().getTaskIndex(id);
+        
+        if(todoList.getProject().getTasks()[currentTaskIndex].status === 'complete'){
+            checkBox.checked = true;
+            taskName.classList.add('taskDone');
+            taskDesc.classList.add('taskDone');
+            taskDueDate.classList.add('taskDone');
+            taskPrio.classList.add('taskDone');
+        }else if(todoList.getProject().getTasks()[currentTaskIndex].status === 'incomplete'){
+            checkBox.checked = false;
+            taskName.classList.remove('taskDone');
+            taskDesc.classList.remove('taskDone');
+            taskDueDate.classList.remove('taskDone');
+            taskPrio.classList.remove('taskDone');
+        }
+        
+    }
+
+    function deleteTask(event){
+        const id = event.currentTarget.parentElement.firstElementChild.id
+        todoList.getProject().removeTask(id);
+
+        changeTaskDisplay();
+    }
+
     return{
         openNewProjectModal,
         closeNewProjectModal,
         createNewProject,
         changeWholeScreen,
+        addTask,
     }
 
 })();
@@ -174,6 +239,9 @@ const domController = (()=>{
 
     const newProjectForm = document.getElementById('newProjectForm');
     newProjectForm.addEventListener('submit',(event)=>domController.createNewProject(event))
+
+    const addTaskForm = document.getElementById('addTaskForm');
+    addTaskForm.addEventListener('submit',(event)=>domController.addTask(event))
 
 })()
 

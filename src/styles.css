@@ -38,7 +38,12 @@
 }
 
 html {
-  scrollbar-width: none;
+    scrollbar-width: none;
+}
+
+body{
+    position: relative;
+    overflow: hidden;
 }
 
 #container{
@@ -130,8 +135,6 @@ svg{
 #body{
     background: linear-gradient(to left, var(--page-color2) 0%, var(--page-color1) 100%);
     padding: 60px;
-    position: relative;
-    overflow: hidden;
 }
 
 .decoration1 {
@@ -352,9 +355,8 @@ svg{
     color: hsl(from var(--high-prio-color) h s calc(l - 35));
 }
 
-.taskCards .taskPrio.done{
-    color: white;
-    background-color: var(--main-text-color)
+.taskCards .taskPrio.taskDone{
+    display: none;
 }
 
 .deleteTask svg{
