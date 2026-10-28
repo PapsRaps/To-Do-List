@@ -4,9 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A website project">
-    <title>My Website</title>
+    <script src="https://kit.fontawesome.com/6899b7e295.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <title>To Do List</title>
   </head>
   <body>
-    
+    <div id="container">
+      <div id="sidebar">
+        <div id="sidebarLogo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rose preview-icon"><path d="M17 10h-1a4 4 0 1 1 4-4v.534"/><path d="M17 6h1a4 4 0 0 1 1.42 7.74l-2.29.87a6 6 0 0 1-5.339-10.68l2.069-1.31"/><path d="M4.5 17c2.8-.5 4.4 0 5.5.8s1.8 2.2 2.3 3.7c-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2"/><path d="M9.77 12C4 15 2 22 2 22"/><circle cx="17" cy="8" r="2"/></svg>RoseTask
+        </div>
+        <button id="newProjectButton">+ New project</button>
+        <div id="yourProjectsTitle">YOUR PROJECTS</div>
+        <nav id="sidebarButtons">
+          <button id="personal1" class="selected"><i class="fa-regular fa-folder-open"></i></i>Personal</button>
+          <button id="bahay1"><i class="fa-regular fa-folder-open"></i></i>Bahay</button>
+        </nav>
+      </div>
+
+
+      <div id="body">
+        <div class="decoration1"></div>
+        <div class="decoration2"></div>
+        <div id="titleContainer">
+          <h1><i class="fa-solid fa-folder-open"></i>Personal</h1>
+          <p>Fill the form to add your task and manage them below.</p>
+        </div>
+        <div id="containerButtons">
+            <button id="allButtonContainer" class="selected">All</button>
+            <button id="activeButtonContainer">Active</button>
+            <button id="completedButtonContainer">Completed</button>
+          </div>
+        <div id="taskContainer">
+          <h2>Your Tasks</h2>
+          <div id="tasks">
+            <div class="taskCards">
+              <input type="checkbox" id="task1">
+              <label>
+                <div class="taskName taskDone">Clean my room</div>
+                <div class="taskDesc taskDone">Organize my desk and bed.</div>
+              </label>
+              <div class="taskDueDate taskDone">
+                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
+              </div>
+              <div class="prioContainer">
+                <div class="taskPrio done">
+                  Done
+                </div>
+              </div>
+              <div class="deleteTask">
+                <i class="fa-solid fa-trash-can"></i>
+              </div>
+            </div>
+            <div class="taskCards">
+              <input type="checkbox" id="task1">
+              <label>
+                <div class="taskName">Clean my room</div>
+                <div class="taskDesc">Organize my desk and bed.</div>
+              </label>
+              <div class="taskDueDate">
+                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
+              </div>
+              <div class="prioContainer">
+                <div class="taskPrio low">
+                  Low
+                </div>
+              </div>
+              <div class="deleteTask">
+                <i class="fa-solid fa-trash-can"></i>
+              </div>
+            </div>
+            <div class="taskCards">
+              <input type="checkbox" id="task1">
+              <label>
+                <div class="taskName">Clean my room</div>
+                <div class="taskDesc">Organize my desk and bed.</div>
+              </label>
+              <div class="taskDueDate">
+                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
+              </div>
+              <div class="prioContainer">
+                <div class="taskPrio mid">
+                  Mid
+                </div>
+              </div>
+              <div class="deleteTask">
+                <i class="fa-solid fa-trash-can"></i>
+              </div>
+            </div>
+            <div class="taskCards">
+              <input type="checkbox" id="task1">
+              <label>
+                <div class="taskName">Clean my room</div>
+                <div class="taskDesc">Organize my desk and bed.</div>
+              </label>
+              <div class="taskDueDate">
+                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
+              </div>
+              <div class="prioContainer">
+                <div class="taskPrio high">
+                  High
+                </div>
+              </div>
+              <div class="deleteTask">
+                <i class="fa-solid fa-trash-can"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="addTaskContainer">
+          <h2>Add a new task</h2>
+          <form id="addTaskForm">
+            <div class="formCol">
+              <label for="taskTitle">Title <span class="required">*</span></label>
+              <input type="text" required placeholder="e.g. Finish project report" id="taskTitle" maxlength="20">
+            </div>
+            <div class="formCol">
+              <label for="taskDescription">Description</label>
+              <textarea placeholder="Optional" id="taskDescription"></textarea>
+            </div>
+            <div class="formCol">
+              <label for="taskDueDate">Due Date</label>
+              <input type="date" placeholder="e.g. Finish project report" id="taskTitle">
+            </div>
+            <div class="formCol">
+              <label for="taskPriority">Priority <span class="required">*</span></label>
+              <select id="taskPriority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </form>
+          <button id="addTaskButton" type="submit" form="addTaskForm">+ Add Task</button>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="newProjectModal">
+      <i class="fa-solid fa-x" id="exitNewProjectModal"></i>
+      <div id="modalTitle">
+        <i class="fa-solid fa-folder-open"></i>
+        <h1>New Project</h1>
+        <p>Give your project a name and (optionally) a description.</p>
+      </div>
+      <form id="newProjectForm">
+        <div class="formRow">
+          <label for="projectName">Project Name <span class="required">*</span></label>
+          <input id="projectName" required maxlength="20">
+        </div>
+        <div class="formRow">
+          <label for="projectDesc">Description</label>
+          <textarea placeholder="Optional" id="projectDesc"></textarea>
+        </div>
+      </form> 
+      <div id="newProjectButtons">
+        <button id="cancelNewProject">Cancel</button>
+        <button id="createNewProject" type="submit" form="newProjectForm">Create Project</button>
+      </div>
+    </dialog>
   </body>
 </html>

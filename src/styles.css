@@ -1,0 +1,512 @@
+:root{
+    --sidebar-background-color: #F4E3E0;
+    --sidebar-selected-color: #e9cdcc;
+    --main-text-color: #922D2D;
+    --description-color: #77716F;
+    --dividers-color: #E9DEDA;
+    --secondary-accent-color: #db908d;
+    --accent-color: #B83232;
+    --white-color: white;
+    --page-color1: #FAF6F2;
+    --page-color2: #ffedec;
+    --input-area-border-color: #cccccc;
+    --decoration-color: #E9B7B5;
+    --black-text-color: #353131;
+    --low-prio-color: #E6EEE4;
+    --mid-prio-color: #FAEEE9;
+    --high-prio-color: #FBE0DE;
+
+    .nunito-sans-font {
+        font-family: "Nunito Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings:
+            "wdth" 100,
+            "YTLC" 500;
+    }
+
+    .playfair-display-font {
+        font-family: "Playfair Display", serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    --header-font: "Playfair Display", serif;
+    --body-text-font: "Nunito Sans", sans-serif;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+#container{
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    min-height: 100vh;
+}
+
+#sidebar{
+    background-color: var(--sidebar-background-color);
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebarLogo{
+    color: var(--main-text-color);
+    font-family: var(--header-font);
+    font-size: 2.5rem;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin: 30px 0;
+}
+
+svg{
+    margin-right: 10px;
+}
+
+#newProjectButton{
+    width: 100%;
+    color: var(--white-color);
+    font-family: var(--body-text-font);
+    font-size: 1.2rem;
+    text-align: start;
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    border: none;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+#newProjectButton:hover{
+    background-color: var(--main-text-color);
+    transition: background-color 200ms ease;
+}
+
+#yourProjectsTitle{
+    font-family: var(--body-text-font);
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--description-color);
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#sidebarButtons{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+#sidebarButtons button{
+    color: var(--main-text-color);
+    font-family: var(--body-text-font);
+    font-size: 1.2rem;
+    text-align: start;
+    padding: 10px 20px;
+    background-color: var(--sidebar-background-color);
+    border: none;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#sidebarButtons button:hover{
+    background-color: var(--secondary-accent-color);
+    transition: background-color 200ms ease;
+}
+
+#sidebarButtons button.selected{
+    background-color: var(--sidebar-selected-color);
+}
+
+#body{
+    background: linear-gradient(to left, var(--page-color2) 0%, var(--page-color1) 100%);
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.decoration1 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: var(--decoration-color);
+    top: -50px;
+    right: -220px;
+}
+
+.decoration1::after{
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: var(--decoration-color);
+    border-radius: 50%;
+    top: -150px;
+    left: -200px;
+}   
+
+.decoration2{
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: var(--main-text-color);
+    top: -230px;
+    right: -200px;
+}
+
+#titleContainer{
+    margin-bottom: 50px;
+}
+
+#titleContainer h1{
+    font-family: var(--header-font);
+    color: var(--main-text-color);
+    font-weight: 500;
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+#titleContainer p{
+    font-family: var(--body-text-font);
+    color: var(--description-color);
+    font-size: 1.1rem;
+}
+
+
+
+#addTaskContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#taskContainer, #addTaskContainer{
+    background-color: var(--white-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.10);
+    margin-bottom: 40px;
+}
+
+#addTaskContainer h2, #taskContainer h2{
+    color: var(--main-text-color);
+    font-family: var(--header-font);
+    font-weight: 800;
+    letter-spacing: 0.02rem;
+    font-size: 2rem;
+}
+
+#addTaskForm{
+    color: var(--description-color);
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 30px;
+}
+
+.formCol{
+    display: flex;
+    flex-direction: column;
+    font-family: var(--body-text-font);
+    font-size: 1.1rem;
+    gap: 5px;
+}
+
+#addTaskForm input, #addTaskForm textarea, #addTaskForm select{
+    font-family: var(--body-text-font);
+    border: 1px solid var(--input-area-border-color);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+#addTaskForm input:hover, #addTaskForm textarea:hover, #addTaskForm select:hover{
+    outline: 2px solid var(--secondary-accent-color);
+}
+
+#addTaskForm input:focus, #addTaskForm textarea:focus, #addTaskForm select:focus{
+    outline: 2px solid var(--main-text-color);
+}
+
+#addTaskForm textarea{
+    resize: none;
+}
+
+.required{
+    color: var(--main-text-color);
+}
+
+#addTaskButton{
+    align-self: end;
+    width: fit-content;
+    color: var(--white-color);
+    background-color: var(--main-text-color);
+    border: none;
+    font-family: var(--body-text-font);
+    font-size: 1rem;
+    padding: 10px 25px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#containerButtons{
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+#containerButtons button{
+    font-size: 1rem;
+    font-family: var(--body-text-font);
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 30px;
+    color: var(--main-text-color);
+    background-color: var(--white-color);
+    border: 1px solid var(--dividers-color);
+    cursor: pointer;
+}
+
+#containerButtons button:hover{
+    background-color: var(--secondary-accent-color);
+    border-color: var(--secondary-accent-color);
+    color: var(--white-color);
+    transition: all 200ms ease;
+}
+
+#containerButtons button.selected{
+    color: var(--white-color);
+    background-color: var(--main-text-color);
+    border-color: var(--main-text-color);
+}
+
+#tasks{
+    margin-top: 10px;
+}
+
+.taskCards{
+    display: grid;
+    grid-template-columns: 0.1fr 1fr 0.4fr 0.3fr 0.05fr;
+    align-items: center;
+    font-family: var(--body-text-font);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--dividers-color);
+}
+
+.taskCards .taskName{
+    color: var(--black-text-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.taskCards .taskDesc{
+    color: var(--description-color);
+    font-size: 1rem;
+}
+
+.taskCards .taskName.taskDone,.taskCards .taskDesc.taskDone{
+    text-decoration: line-through;
+}
+
+.taskCards .taskDueDate{
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.taskCards .taskDueDate.taskDone{
+    color: var(--description-color);
+}
+
+.taskCards .taskPrio{
+    width: fit-content;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.taskCards .taskPrio.low{
+    background-color: var(--low-prio-color);
+    color: hsl(from var(--low-prio-color) h s calc(l - 35));
+}
+
+.taskCards .taskPrio.mid{
+    background-color: var(--mid-prio-color);
+    color: hsl(from var(--mid-prio-color) h s calc(l - 35));
+}
+
+.taskCards .taskPrio.high{
+    background-color: var(--high-prio-color);
+    color: hsl(from var(--high-prio-color) h s calc(l - 35));
+}
+
+.taskCards .taskPrio.done{
+    color: white;
+    background-color: var(--main-text-color)
+}
+
+.deleteTask svg{
+    color: var(--secondary-accent-color);
+    cursor: pointer;
+}
+
+.deleteTask svg:hover{
+    color: var(--main-text-color);
+    transform: rotate(-20deg);
+    transition: all 200ms ease;
+}
+
+.taskCards input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--main-text-color);
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+}
+
+.taskCards input[type="checkbox"]:hover{
+    background-color: var(--secondary-accent-color);
+    transition: background-color 200ms ease;
+}
+
+ .taskCards input[type="checkbox"]:checked {
+    background-color: var(--main-text-color);
+}
+
+.taskCards input[type="checkbox"]:checked::before{
+    content: "✓";
+    color: var(--white-color);
+    font-size: .9rem;
+}
+
+
+#newProjectModal{
+    border: none;
+    background-color: var(--sidebar-background-color);
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+#exitNewProjectModal{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    color: var(--main-text-color);
+}
+
+#modalTitle{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 0.1fr 1fr;
+    margin-bottom: 20px;
+}
+
+#modalTitle h1,#modalTitle svg{
+    font-family: var(--header-font);
+    color: var(--main-text-color);
+    font-weight: 500;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    margin-bottom: 0;
+}
+
+#modalTitle svg{
+    grid-row: span 2;
+    align-self: center;
+    font-size: 3rem;
+}
+
+#modalTitle p{
+    font-family: var(--body-text-font);
+    color: var(--description-color);
+    font-size: 1rem;
+}
+
+#newProjectForm{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+#newProjectForm .formRow{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#newProjectForm .formRow label{
+    font-family: var(--body-text-font);
+    color: var(--black-text-color);
+}
+
+#newProjectForm .formRow input, #newProjectForm .formRow textarea{
+    font-family: var(--body-text-font);
+    border: 1px solid var(--input-area-border-color);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+#newProjectForm .formRow textarea{
+    resize: none;
+}
+
+
+#newProjectForm input:hover, #newProjectForm textarea:hover{
+    outline: 2px solid var(--secondary-accent-color);
+}
+
+#newProjectForm input:focus, #newProjectForm textarea:focus{
+    outline: 2px solid var(--main-text-color);
+}
+
+#newProjectButtons{
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    margin-bottom: 10px;
+}
+
+#newProjectButtons button{
+    width: fit-content;
+    padding: 10px 15px;
+    border: 1px solid var(--secondary-accent-color);
+    background-color: var(--secondary-accent-color);
+    color: var(--white-color);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-family: var(--body-text-font);
+}
+
+#newProjectButtons button:hover{
+    border: 1px solid var(--main-text-color);
+    background-color: var(--main-text-color);
+    transition: background-color 200ms ease;
+    transition: border 200ms ease;
+}
+
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#newProjectModal:not([open]){
+  display: none;
+}
