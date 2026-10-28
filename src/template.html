@@ -19,8 +19,6 @@
         <button id="newProjectButton">+ New project</button>
         <div id="yourProjectsTitle">YOUR PROJECTS</div>
         <nav id="sidebarButtons">
-          <button id="personal1" class="selected"><i class="fa-regular fa-folder-open"></i></i>Personal</button>
-          <button id="bahay1"><i class="fa-regular fa-folder-open"></i></i>Bahay</button>
         </nav>
       </div>
 
@@ -29,7 +27,7 @@
         <div class="decoration1"></div>
         <div class="decoration2"></div>
         <div id="titleContainer">
-          <h1><i class="fa-solid fa-folder-open"></i>Personal</h1>
+          <h1><i class="fa-solid fa-folder-open"></i><span id="projectTitleName">Personal</span></h1>
           <p>Fill the form to add your task and manage them below.</p>
         </div>
         <div id="containerButtons">
@@ -144,7 +142,6 @@
     </div>
 
     <dialog id="newProjectModal">
-      <i class="fa-solid fa-x" id="exitNewProjectModal"></i>
       <div id="modalTitle">
         <i class="fa-solid fa-folder-open"></i>
         <h1>New Project</h1>
