@@ -82,7 +82,10 @@
     </div>
 
     <dialog id="newProjectModal">
-      <div id="modalTitle">
+      <button class="close-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="modalTitle">
         <i class="fa-solid fa-folder-open"></i>
         <h1>New Project</h1>
         <p>Give your project a name and (optionally) a description.</p>
@@ -90,7 +93,7 @@
       <form id="newProjectForm">
         <div class="formRow">
           <label for="projectName">Project Name <span class="required">*</span></label>
-          <input id="projectName" required maxlength="20">
+          <input id="projectName" required maxlength="10">
         </div>
         <div class="formRow">
           <label for="projectDesc">Description</label>
@@ -102,5 +105,56 @@
         <button id="createNewProject" type="submit" form="newProjectForm">Create Project</button>
       </div>
     </dialog>
+
+    <dialog id="editProjectModal">
+      <button class="close-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="modalTitle">
+        <i class="fa-solid fa-folder-open"></i>
+        <h1>Edit Project</h1>
+        <p>Edit your project name and description</p>
+      </div>
+      <form id="editProjectForm">
+        <div class="formRow">
+          <label for="projectNewName">Project Name <span class="required">*</span></label>
+          <input id="projectNewName" required maxlength="10">
+        </div>
+        <div class="formRow">
+          <label for="projectNewDesc">Description</label>
+          <textarea placeholder="Optional" id="projectNewDesc"></textarea>
+        </div>
+      </form> 
+      <div id="editProjectButtons">
+        <button id="cancelEditProject">Cancel</button>
+        <button id="editProject" type="submit" form="editProjectForm">Save Changes</button>
+      </div>
+    </dialog>
+
+    <dialog id="deleteProjectModal">
+      <button class="close-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="deleteModalContainer">
+        <div id="deleteModalIcon">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+      </div>
+      <div id="deleteModalTitle">
+        Delete Project?
+      </div>
+      <div id="deleteModalQuestion">
+        Are you sure you want to delete "<span id="deleteModalProjectName">This shit</span>"?
+      </div>
+      <div id="deleteModalConformation">
+        This will permanently remove the project and all of its tasks. This action cannot be undone.
+      </div>
+      <div id="deleteModalButtons">
+        <button id="cancelDeleteProject">Cancel</button>
+        <button id="deleteProject">Delete Project</button>
+      </div>
+    </dialog>
+
+
   </body>
 </html>

@@ -85,7 +85,7 @@ export default class Project{
     getTaskStatus(taskId){
         const index = this.getTaskIndex(taskId);
 
-        if (index === -1) return false;
+        if (index === -1) return null;
 
         return this.#tasks[index].status;
     }

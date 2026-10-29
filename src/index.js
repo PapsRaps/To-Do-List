@@ -3,50 +3,14 @@ import "./styles.css";
 
 import { format, parseISO } from 'date-fns';
 
-import Project from './modules/project.js'
-
-
-const todoList = (()=>{
-    let projects = [];
-    let currentProjectId = null;
-
-    function createProject(newName, newDesc){
-        const id = crypto.randomUUID();
-        const project = new Project(id,newName, newDesc)
-        projects.push(project);
-        currentProjectId = id;
-    }
-
-    function setCurrentProject(id){
-        currentProjectId = id;
-    }
-
-    function getProject(){
-        return projects.find(project => project.projectId === currentProjectId)
-    }
-
-    function getListOfProjects(){
-        return [...projects];
-    }
-
-    // function updateProjects(listOfProjects){
-    //     projects = listOfProjects;
-    // }
-
-    return{
-        createProject,
-        setCurrentProject,
-        getProject,
-        getListOfProjects,
-        // updateProjects,
-    }
-})();
-
-
-
+import todoList from './modules/todolist.js'
 
 const domController = (()=>{
-    const modal = document.getElementById('newProjectModal');
+    const addProjectModal = document.getElementById('newProjectModal');
+    const editProjectModal = document.getElementById('editProjectModal');
+    const deleteProjectModal = document.getElementById('deleteProjectModal');
+    let editingProjectId = null;
+
     const projectTitleName = document.getElementById('projectTitleName');
     const projectTitleDesc = document.querySelector('#titleContainer p');
     const taskContainer = document.getElementById('tasks');
@@ -62,11 +26,36 @@ const domController = (()=>{
 
     
     function openNewProjectModal(){
-        modal.showModal();
+        addProjectModal.showModal();
     }
 
-    function closeNewProjectModal(){
-        modal.close();
+    function openEditProjectModal(projectId){
+        editingProjectId = projectId;
+
+        const projectValues = todoList.getProjectNameAndDesc(projectId)
+
+        document.getElementById('projectNewName').value = projectValues[0]
+        document.getElementById('projectNewDesc').value = projectValues[1]
+
+        editProjectModal.showModal();
+    }
+
+    function openDeleteProjectModal(projectId){
+        editingProjectId = projectId;
+
+        const projectValues = todoList.getProjectNameAndDesc(projectId)
+
+        document.getElementById('deleteModalProjectName').innerText = `${projectValues[0]}`
+
+        deleteProjectModal.showModal();
+    }
+
+    function closeModal(event){
+        const currentModal = event.currentTarget.closest('dialog');
+        currentModal.close();
+        editingProjectId = null;
+
+        if(currentModal.querySelector('form') !== null)currentModal.querySelector('form').reset();
     }
 
     function createNewProject(event){
@@ -80,24 +69,98 @@ const domController = (()=>{
 
         changeWholeScreen();
 
-        modal.close();
+        addProjectModal.close();
         event.target.reset();
+    }
+
+    function editProject(event){
+        event.preventDefault();
+
+        const newName = document.getElementById('projectNewName').value;
+        const newDesc = document.getElementById('projectNewDesc').value;
+
+        todoList.updateProject(editingProjectId,newName,newDesc);
+
+        changeWholeScreen();
+
+        editingProjectId = null;
+        editProjectModal.close();
+        event.target.reset();
+    }
+
+    function deleteProject(event){
+        event.preventDefault();
+
+        todoList.removeProject(editingProjectId);
+        todoList.protectCurrentProjectId(editingProjectId)
+
+        changeWholeScreen();
+
+        editingProjectId = null;
+        deleteProjectModal.close();
     }
 
     function changeSideBar(){
         sidebarButtons.replaceChildren();
 
-        todoList.getListOfProjects().forEach(project => {
-            const button = document.createElement('button');
-            button.dataset.projectId = `${project.projectId}`;
-            button.innerHTML = `<i class="fa-regular fa-folder-open"></i>`
-            button.append(` ` + `${project.projectName}`)
-            button.addEventListener('click',(event)=>changeProject(event))
-
-            sidebarButtons.appendChild(button)
-        });
+        todoList.getListOfProjects().forEach(project => createProjectItemButton(project));
         changeSelectedProject();
     }
+
+    function createProjectItemButton(project){
+        const button = document.createElement('button');
+        button.dataset.projectId = `${project.projectId}`;
+        button.innerHTML = `<i class="fa-regular fa-folder-open"></i>`
+        button.append(` ` + `${project.projectName}`)
+        button.addEventListener('click',(event)=>changeProject(event))
+        button.className = 'projectButton';
+
+
+        const sideButton = document.createElement('button');
+        sideButton.innerHTML = `<i class="fa-solid fa-ellipsis"></i>`
+        sideButton.className = 'projectSideButton'
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'project-dropdown is-hidden';
+
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.textContent = 'Edit project';
+        editButton.addEventListener('click',(event)=>{
+            const projectId = event.currentTarget.closest('.projectItem').querySelector('.projectButton').dataset.projectId;
+            openEditProjectModal(projectId)
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Delete project';
+        deleteButton.className = 'delete-project';
+        deleteButton.addEventListener('click',(event)=>{
+            const projectId = event.currentTarget.closest('.projectItem').querySelector('.projectButton').dataset.projectId;
+            openDeleteProjectModal(projectId)
+        });
+
+        dropdown.append(editButton, deleteButton);
+
+        sideButton.addEventListener('click', (event)=>{
+            event.stopPropagation();
+
+            document.querySelectorAll('.project-dropdown').forEach((menu) => {
+                if (menu !== dropdown) {
+                    menu.classList.add('is-hidden');
+                }
+            });
+
+            dropdown.classList.toggle('is-hidden');
+        })
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'projectItem';
+        buttonContainer.append(button,sideButton,dropdown);
+
+        sidebarButtons.appendChild(buttonContainer)
+    }
+
 
     function changeProject(event){
         const projectId = event.currentTarget.dataset.projectId;
@@ -207,12 +270,12 @@ const domController = (()=>{
     }
 
     function changeSelectedProject(){
-        const sidebarButtons = document.querySelectorAll('#sidebarButtons button');
+        const sidebarButtons = document.querySelectorAll('#sidebarButtons .projectItem');
         Array.from(sidebarButtons).forEach((button)=>{
             if(button.classList.contains('selected')){
                 button.classList.toggle('selected');
             }
-            if(button.dataset.projectId === todoList.getProject().projectId){
+            if(button.querySelector('.projectButton').dataset.projectId === todoList.getProject().projectId){
                 button.classList.toggle('selected');
             }
         })
@@ -297,8 +360,10 @@ const domController = (()=>{
 
     return{
         openNewProjectModal,
-        closeNewProjectModal,
+        closeModal,
         createNewProject,
+        editProject,
+        deleteProject,
         changeWholeScreen,
         addTask,
         changeShowStatus,
@@ -310,14 +375,31 @@ const domController = (()=>{
     const newProjectButtons = document.querySelectorAll('#newProjectButton');
     Array.from(newProjectButtons).forEach(button=>button.addEventListener('click',domController.openNewProjectModal));
 
+    const cancelEditProject = document.getElementById('cancelEditProject');
+    cancelEditProject.addEventListener('click',(event)=>{domController.closeModal(event)});
+
     const cancelNewProject = document.getElementById('cancelNewProject');
-    cancelNewProject.addEventListener('click',domController.closeNewProjectModal)
+    cancelNewProject.addEventListener('click',(event)=>{domController.closeModal(event)});
+
+    const cancelDeleteProject = document.getElementById('cancelDeleteProject');
+    cancelDeleteProject.addEventListener('click',(event)=>{domController.closeModal(event)});
+
+    const exitModalButtons = document.querySelectorAll('.close-modal');
+    Array.from(exitModalButtons).forEach((button)=>{
+        button.addEventListener('click',(event)=>{domController.closeModal(event)});
+    })
 
     const newProjectForm = document.getElementById('newProjectForm');
     newProjectForm.addEventListener('submit',(event)=>domController.createNewProject(event))
 
     const addTaskForm = document.getElementById('addTaskForm');
     addTaskForm.addEventListener('submit',(event)=>domController.addTask(event))
+
+    const editProjectForm = document.getElementById('editProjectForm');
+    editProjectForm.addEventListener('submit',(event)=>domController.editProject(event))
+
+    const deleteProjectButton = document.getElementById('deleteProject');
+    deleteProjectButton.addEventListener('click',(event)=>domController.deleteProject(event))
 
     const allButtonContainer = document.getElementById('allButtonContainer');
     const activeButtonContainer = document.getElementById('activeButtonContainer');
@@ -326,6 +408,12 @@ const domController = (()=>{
     activeButtonContainer.addEventListener('click',(event)=>domController.changeShowStatus(event));
     completedButtonContainer.addEventListener('click',(event)=>domController.changeShowStatus(event));
 
+    document.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelectorAll('.project-dropdown').forEach((menu) => {
+            menu.classList.add('is-hidden');
+        });
+    });
 })()
 
 domController.changeWholeScreen();
