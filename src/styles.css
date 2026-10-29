@@ -89,6 +89,7 @@ svg{
     margin-bottom: 30px;
 }
 
+
 #newProjectButton:hover{
     background-color: var(--main-text-color);
     transition: background-color 200ms ease;
@@ -101,6 +102,16 @@ svg{
     color: var(--description-color);
     margin-left: 10px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#yourProjectsTitle::after{
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--main-text-color);
 }
 
 #sidebarButtons{
@@ -123,18 +134,19 @@ svg{
     cursor: pointer;
 }
 
+#sidebarButtons button.selected{
+    background-color: var(--sidebar-selected-color);
+}
+
 #sidebarButtons button:hover{
     background-color: var(--secondary-accent-color);
     transition: background-color 200ms ease;
 }
 
-#sidebarButtons button.selected{
-    background-color: var(--sidebar-selected-color);
-}
-
 #body{
     background: linear-gradient(to left, var(--page-color2) 0%, var(--page-color1) 100%);
     padding: 60px;
+    position: relative;
 }
 
 .decoration1 {
@@ -145,6 +157,7 @@ svg{
     background: var(--decoration-color);
     top: -50px;
     right: -220px;
+    z-index: 1;
 }
 
 .decoration1::after{
@@ -156,6 +169,7 @@ svg{
     border-radius: 50%;
     top: -150px;
     left: -200px;
+    z-index: 1;
 }   
 
 .decoration2{
@@ -166,6 +180,7 @@ svg{
     background: var(--main-text-color);
     top: -230px;
     right: -200px;
+    z-index: 1;
 }
 
 #titleContainer{
@@ -200,6 +215,8 @@ svg{
     border-radius: 10px;
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.10);
     margin-bottom: 40px;
+    position: relative;
+    z-index: 3;
 }
 
 #addTaskContainer h2, #taskContainer h2{
@@ -499,10 +516,80 @@ svg{
 }
 
 
+
+#noProjectsDisplay{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    align-items: center;
+}
+
+#noProjectsDisplay img{
+    width: 100%;
+    height: auto;
+}
+
+#noProjectsDisplay h2{
+    font-family: var(--header-font);
+    color: var(--main-text-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+#noProjectsDisplay p{
+    font-family: var(--body-text-font);
+    color: var(--description-color);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+#noProjectsDisplay button{
+    padding: 10px 40px;
+}
+
+
+#noProjectsDisplaySidebar{
+    margin-top: 50px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--body-text-font);
+    color: var(--description-color);
+    gap: 10px;
+    width: 80%;
+}
+
+#noProjectsDisplaySidebar svg{
+    font-size: 2.5rem;
+}
+
+#noProjectsDisplaySidebar h4{
+    font-size: 1.3rem;
+}
+
+#noProjectsDisplaySidebar p{
+    font-size: 1rem;
+    text-align: center;
+}
+
+
+
+
+
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.2);
 }
 
 #newProjectModal:not([open]){
   display: none;
+}
+
+.is-hidden{
+    display: none !important;
 }

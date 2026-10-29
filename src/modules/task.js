@@ -32,7 +32,7 @@ export default class Task{
     }
 
     set taskDueDate(newDueDate){
-        if (newDueDate.trim() !== "") {
+        if (typeof newDueDate === "string" && newDueDate.trim() !== "") {
             this.#taskDueDate = newDueDate;
         }else{
             this.#taskDueDate = 'No Due Date';

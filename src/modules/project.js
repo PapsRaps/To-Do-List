@@ -14,7 +14,7 @@ export default class Project{
     }
 
     set projectName(newName){
-        if (newName.trim() !== "") {
+        if (typeof newName === "string" && newName.trim() !== "") {
             this.#projectName = newName;
         }else{
             this.#projectName = 'Unspecified';
@@ -31,7 +31,7 @@ export default class Project{
                 `Less talk. More action.`,
                 `Small progress is still progress. Keep going.`
             ]
-            this.#projectDesc = motivationalQuotes[Math.floor(Math.random() * 6)];
+            this.#projectDesc = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
         }else{
             this.#projectDesc = newDesc;
         }
@@ -80,5 +80,21 @@ export default class Project{
         if (index === -1) return;
 
         this.#tasks.splice(index, 1);
+    }
+
+    getTaskStatus(taskId){
+        const index = this.getTaskIndex(taskId);
+
+        if (index === -1) return false;
+
+        return this.#tasks[index].status;
+    }
+
+    toggleTaskStatus(taskId){
+        const index = this.getTaskIndex(taskId);
+
+        if (index === -1) return;
+
+        this.#tasks[index].toggleStatus();
     }
 }

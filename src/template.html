@@ -20,99 +20,39 @@
         </div>
         <button id="newProjectButton">+ New project</button>
         <div id="yourProjectsTitle">YOUR PROJECTS</div>
-        <nav id="sidebarButtons">
-        </nav>
+        <div id="noProjectsDisplaySidebar" class="is-hidden">
+          <i class="fa-regular fa-folder"></i>
+          <h4>No projects yet</h4>
+          <p>Create your first project to start organizing your tasks.</p>
+        </div>
+        <nav id="sidebarButtons"></nav>
       </div>
 
 
       <div id="body">
         <div id="titleContainer">
-          <h1><i class="fa-solid fa-folder-open"></i><span id="projectTitleName">Personal</span></h1>
-          <p>Fill the form to add your task and manage them below.</p>
+          <h1><i class="fa-solid fa-folder-open"></i><span id="projectTitleName">No Project Selected</span></h1>
+          <p>Create a new one from the sidebar or below to get started.</p>
         </div>
-        <div id="containerButtons">
+        <div id="noProjectsDisplay" class="is-hidden">
+          <img src="./images/Pastel Rose Emblem Folder Sticker.png" alt="folder with rose">
+          <h2>No Project Selected</h2>
+          <p>Create a new one to get started.</p>
+          <div id="newProjectButtonContainer">
+            <button id="newProjectButton">+ New project</button>
+          </div>
+        </div>
+        <div id="containerButtons" class="is-hidden">
           <button id="allButtonContainer" class="selected">All</button>
           <button id="activeButtonContainer">Active</button>
           <button id="completedButtonContainer">Completed</button>
         </div>
-        <div id="taskContainer">
+        <div id="taskContainer" class="is-hidden">
           <h2>Your Tasks</h2>
           <div id="tasks">
-            <div class="taskCards">
-              <input type="checkbox" id="task1">
-              <label>
-                <div class="taskName taskDone">Clean my room</div>
-                <div class="taskDesc taskDone">Organize my desk and bed.</div>
-              </label>
-              <div class="taskDueDate taskDone">
-                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
-              </div>
-              <div class="prioContainer">
-                <div class="taskPrio done">
-                  Done
-                </div>
-              </div>
-              <div class="deleteTask">
-                <i class="fa-solid fa-trash-can"></i>
-              </div>
-            </div>
-            <div class="taskCards">
-              <input type="checkbox" id="task1">
-              <label>
-                <div class="taskName">Clean my room</div>
-                <div class="taskDesc">Organize my desk and bed.</div>
-              </label>
-              <div class="taskDueDate">
-                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
-              </div>
-              <div class="prioContainer">
-                <div class="taskPrio low">
-                  Low
-                </div>
-              </div>
-              <div class="deleteTask">
-                <i class="fa-solid fa-trash-can"></i>
-              </div>
-            </div>
-            <div class="taskCards">
-              <input type="checkbox" id="task1">
-              <label>
-                <div class="taskName">Clean my room</div>
-                <div class="taskDesc">Organize my desk and bed.</div>
-              </label>
-              <div class="taskDueDate">
-                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
-              </div>
-              <div class="prioContainer">
-                <div class="taskPrio mid">
-                  Mid
-                </div>
-              </div>
-              <div class="deleteTask">
-                <i class="fa-solid fa-trash-can"></i>
-              </div>
-            </div>
-            <div class="taskCards">
-              <input type="checkbox" id="task1">
-              <label>
-                <div class="taskName">Clean my room</div>
-                <div class="taskDesc">Organize my desk and bed.</div>
-              </label>
-              <div class="taskDueDate">
-                <i class="fa-regular fa-calendar"></i> Oct 30, 2026
-              </div>
-              <div class="prioContainer">
-                <div class="taskPrio high">
-                  High
-                </div>
-              </div>
-              <div class="deleteTask">
-                <i class="fa-solid fa-trash-can"></i>
-              </div>
-            </div>
           </div>
         </div>
-        <div id="addTaskContainer">
+        <div id="addTaskContainer" class="is-hidden">
           <h2>Add a new task</h2>
           <form id="addTaskForm">
             <div class="formCol">

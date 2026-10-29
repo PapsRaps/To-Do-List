@@ -1,7 +1,7 @@
 import "./reset.css";
 import "./styles.css";
 
-import {format} from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 import Project from './modules/project.js'
 
@@ -13,7 +13,8 @@ const todoList = (()=>{
     function createProject(newName, newDesc){
         const id = crypto.randomUUID();
         const project = new Project(id,newName, newDesc)
-        projects.push(project)
+        projects.push(project);
+        currentProjectId = id;
     }
 
     function setCurrentProject(id){
@@ -49,6 +50,16 @@ const domController = (()=>{
     const projectTitleName = document.getElementById('projectTitleName');
     const projectTitleDesc = document.querySelector('#titleContainer p');
     const taskContainer = document.getElementById('tasks');
+    let showTaskStatus = 'all';
+
+    const noProjectsDisplaySidebar = document.getElementById('noProjectsDisplaySidebar');
+    const noProjectsDisplayBody = document.getElementById('noProjectsDisplay');
+
+    const sidebarButtons = document.getElementById('sidebarButtons');
+    const taskContainerContainer = document.getElementById('taskContainer');
+    const addTaskContainer = document.getElementById('addTaskContainer');
+    const containerButtons = document.getElementById('containerButtons');
+
     
     function openNewProjectModal(){
         modal.showModal();
@@ -65,6 +76,8 @@ const domController = (()=>{
         const newDesc = document.getElementById('projectDesc').value;
         
         todoList.createProject(newName, newDesc);
+
+
         changeWholeScreen();
 
         modal.close();
@@ -72,13 +85,13 @@ const domController = (()=>{
     }
 
     function changeSideBar(){
-        const sidebarButtons = document.getElementById('sidebarButtons')
         sidebarButtons.replaceChildren();
 
         todoList.getListOfProjects().forEach(project => {
             const button = document.createElement('button');
             button.dataset.projectId = `${project.projectId}`;
-            button.innerHTML = `<i class="fa-regular fa-folder-open"></i>${project.projectName}`
+            button.innerHTML = `<i class="fa-regular fa-folder-open"></i>`
+            button.append(` ` + `${project.projectName}`)
             button.addEventListener('click',(event)=>changeProject(event))
 
             sidebarButtons.appendChild(button)
@@ -94,18 +107,62 @@ const domController = (()=>{
     }
 
     function changeWholeScreen(){
-        changeTaskDisplay();
-        changeSideBar();
+        const hasProjects = checkProjectList();
+
+        changeBody(!hasProjects);
+
+        if (hasProjects) {
+            changeProjectTitle();
+            changeSideBar();
+            changeTaskDisplay();
+        }
+    }
+
+    function checkProjectList(){
+        const projectList = todoList.getListOfProjects();
+        if (Array.isArray(projectList) && projectList.length === 0){
+            return false;
+        }
+        return true;
+    }
+
+    function changeBody(noProjects) {
+        if(noProjects){
+            projectTitleName.innerText = 'No Project Selected';
+            projectTitleDesc.innerText = 'Create a new one from the sidebar or below to get started.'
+        }
+
+        const showEmpty = !noProjects
+
+        noProjectsDisplayBody.classList.toggle('is-hidden', showEmpty);
+        noProjectsDisplaySidebar.classList.toggle('is-hidden', showEmpty);
+
+        sidebarButtons.classList.toggle('is-hidden', !showEmpty);
+        taskContainerContainer.classList.toggle('is-hidden', !showEmpty);
+        addTaskContainer.classList.toggle('is-hidden', !showEmpty);
+        containerButtons.classList.toggle('is-hidden', !showEmpty);
+    }
+
+    function changeProjectTitle(){
+        projectTitleName.innerText = todoList.getProject().projectName;
+        projectTitleDesc.innerText = todoList.getProject().projectDesc;
     }
 
     function changeTaskDisplay(){
-        projectTitleName.innerText = todoList.getProject().projectName;
-        projectTitleDesc.innerText = todoList.getProject().projectDesc;
         taskContainer.replaceChildren();
 
-        const taskList = todoList.getProject().getTasks();
-        taskList.forEach((task)=>{
-            const taskCard = document.createElement('div');
+        let taskList = todoList.getProject().getTasks();
+        if(showTaskStatus==='active'){
+            taskList = taskList.filter((task)=>task.status === 'incomplete')
+        }else if(showTaskStatus==='completed'){
+            taskList = taskList.filter((task)=>task.status === 'complete')
+        }
+
+        taskList.forEach((task)=>{createTaskCard(task)})
+    }
+
+    function createTaskCard(task){
+        const taskCard = document.createElement('div');
             taskCard.className = 'taskCards';
 
             const checkBox = document.createElement('input');
@@ -115,7 +172,6 @@ const domController = (()=>{
 
             const label = document.createElement('label');
             label.htmlFor = task.taskId;
-            checkBox.appendChild(label);
 
             const taskName = document.createElement('div');
             const taskDesc = document.createElement('div');
@@ -148,7 +204,6 @@ const domController = (()=>{
             taskContainer.appendChild(taskCard);
 
             updateTaskStatusDisplay(task.taskId)
-        })
     }
 
     function changeSelectedProject(){
@@ -163,6 +218,28 @@ const domController = (()=>{
         })
     }
 
+    function changeShowStatus(event){
+        const containerButtons = document.querySelectorAll('#containerButtons button');
+        Array.from(containerButtons).forEach((button)=>{
+            if(button.classList.contains('selected')){
+                button.classList.toggle('selected');
+            }
+            if(button.id === event.currentTarget.id){
+                button.classList.toggle('selected');
+            }
+        });
+
+        if(event.currentTarget.id === 'allButtonContainer'){
+            showTaskStatus = 'all'
+        }else if(event.currentTarget.id === 'activeButtonContainer'){
+            showTaskStatus = 'active'
+        }else if(event.currentTarget.id === 'completedButtonContainer'){
+            showTaskStatus = 'completed'
+        }
+        
+        changeTaskDisplay();
+    }
+
     function addTask(event){
         event.preventDefault();
         const taskName = document.getElementById('taskTitle').value;
@@ -171,7 +248,7 @@ const domController = (()=>{
         const taskPriority = document.getElementById('taskPriority').value;
 
         if(taskDueDate !== ''){
-            taskDueDate = format(taskDueDate, `MMM d, yyyy`)
+            taskDueDate = format(parseISO(taskDueDate), 'MMM d, yyyy');
         };
 
         todoList.getProject().createTask(taskName,taskDescription,taskDueDate,taskPriority)
@@ -182,28 +259,26 @@ const domController = (()=>{
     }
 
     function toggleStatusTask(event){
-        const taskIndex = todoList.getProject().getTaskIndex(event.currentTarget.id);
-        todoList.getProject().getTasks()[taskIndex].toggleStatus();
+        todoList.getProject().toggleTaskStatus(event.currentTarget.id);
 
-        updateTaskStatusDisplay(event.currentTarget.id)
-        console.log(todoList.getProject().getTasks()[taskIndex].status)
+        changeTaskDisplay();
     }
 
     function updateTaskStatusDisplay(id){
         const checkBox = document.getElementById(id);
-        const taskName = checkBox.nextElementSibling.firstElementChild;
-        const taskDesc = checkBox.nextElementSibling.lastElementChild;
-        const taskDueDate = checkBox.nextElementSibling.nextElementSibling;
-        const taskPrio = checkBox.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild;
-        const currentTaskIndex = todoList.getProject().getTaskIndex(id);
+        const taskCard = checkBox.closest('.taskCards');
+        const taskName = taskCard.querySelector('.taskName');
+        const taskDesc = taskCard.querySelector('.taskDesc');
+        const taskDueDate = taskCard.querySelector('.taskDueDate');
+        const taskPrio = taskCard.querySelector('.taskPrio');
         
-        if(todoList.getProject().getTasks()[currentTaskIndex].status === 'complete'){
+        if(todoList.getProject().getTaskStatus(id) === 'complete'){
             checkBox.checked = true;
             taskName.classList.add('taskDone');
             taskDesc.classList.add('taskDone');
             taskDueDate.classList.add('taskDone');
             taskPrio.classList.add('taskDone');
-        }else if(todoList.getProject().getTasks()[currentTaskIndex].status === 'incomplete'){
+        }else if(todoList.getProject().getTaskStatus(id) === 'incomplete'){
             checkBox.checked = false;
             taskName.classList.remove('taskDone');
             taskDesc.classList.remove('taskDone');
@@ -214,7 +289,7 @@ const domController = (()=>{
     }
 
     function deleteTask(event){
-        const id = event.currentTarget.parentElement.firstElementChild.id
+        const id = event.currentTarget.closest('.taskCards').querySelector('input[type="checkbox"]').id
         todoList.getProject().removeTask(id);
 
         changeTaskDisplay();
@@ -226,13 +301,14 @@ const domController = (()=>{
         createNewProject,
         changeWholeScreen,
         addTask,
+        changeShowStatus,
     }
 
 })();
 
 (()=>{
-    const newProjectButton = document.getElementById('newProjectButton');
-    newProjectButton.addEventListener('click',domController.openNewProjectModal);
+    const newProjectButtons = document.querySelectorAll('#newProjectButton');
+    Array.from(newProjectButtons).forEach(button=>button.addEventListener('click',domController.openNewProjectModal));
 
     const cancelNewProject = document.getElementById('cancelNewProject');
     cancelNewProject.addEventListener('click',domController.closeNewProjectModal)
@@ -243,14 +319,13 @@ const domController = (()=>{
     const addTaskForm = document.getElementById('addTaskForm');
     addTaskForm.addEventListener('submit',(event)=>domController.addTask(event))
 
+    const allButtonContainer = document.getElementById('allButtonContainer');
+    const activeButtonContainer = document.getElementById('activeButtonContainer');
+    const completedButtonContainer = document.getElementById('completedButtonContainer');
+    allButtonContainer.addEventListener('click',(event)=>domController.changeShowStatus(event));
+    activeButtonContainer.addEventListener('click',(event)=>domController.changeShowStatus(event));
+    completedButtonContainer.addEventListener('click',(event)=>domController.changeShowStatus(event));
+
 })()
-
-
-
-todoList.createProject('Personal','');
-todoList.setCurrentProject(todoList.getListOfProjects()[0].projectId)
-todoList.getProject().createTask('Eat','Eat some foods', 'Oct 29, 2026', 'mid')
-todoList.getProject().createTask('Clean my room','Organize my desk and bed', 'Oct 30, 2026', 'low')
-todoList.createProject('Study','');
 
 domController.changeWholeScreen();
