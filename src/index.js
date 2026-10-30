@@ -1,8 +1,6 @@
 import "./reset.css";
 import "./styles.css";
 
-import { format, parseISO } from 'date-fns';
-
 import domController from './modules/domController.js'
 
 (()=>{
