@@ -2,19 +2,20 @@
     --sidebar-background-color: #F4E3E0;
     --sidebar-selected-color: #e9cdcc;
     --main-text-color: #922D2D;
-    --description-color: #77716F;
-    --dividers-color: #E9DEDA;
+    --decoration-color: #E9B7B5;
     --secondary-accent-color: #db908d;
     --accent-color: #B83232;
-    --white-color: white;
     --page-color1: #FAF6F2;
     --page-color2: #ffedec;
+    
+    --white-color: white;
     --input-area-border-color: #cccccc;
-    --decoration-color: #E9B7B5;
     --black-text-color: #353131;
     --low-prio-color: #E6EEE4;
     --mid-prio-color: #FAEEE9;
     --high-prio-color: #FBE0DE;
+    --description-color: #77716F;
+    --dividers-color: #E9DEDA;
 
     .nunito-sans-font {
         font-family: "Nunito Sans", sans-serif;
@@ -734,6 +735,101 @@ svg{
 #deleteModalButtons button:hover{
     border: 1px solid var(--main-text-color);
     background-color: var(--main-text-color);
+}
+
+
+.theme-section{
+    margin-top: auto;
+    padding: 10px 10px;
+    background-color: var(--sidebar-background-color);
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.theme-toggle{
+    font-weight: 600;
+    border: none;
+    background-color: transparent;
+    color: var(--main-text-color);
+    font-family: var(--body-text-font);
+    font-size: 1.2rem;
+    text-align: start;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.theme-toggle .fa-chevron-up{
+    margin-left: auto;
+}
+
+.theme-options {
+    display: none;
+}
+
+.theme-options.show {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 15px;
+
+    margin-bottom: 20px;
+    background-color: var(--sidebar-selected-color);
+}
+
+.theme-title{
+    font-family: var(--body-text-font);
+    color: var(--main-text-color);
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.theme-select-options{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.theme-option{
+    width: 110px;
+    background-color: var(--white-color);
+    font-family: var(--body-text-font);
+    border: 2px solid var(--white-color);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: border-color 200ms ease;
+}
+
+.theme-option:hover{
+    border-color: var(--main-text-color);
+}
+
+.circleTheme{
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+}
+
+.circleTheme.red{
+    background-color: #B83232;
+}
+
+.circleTheme.blue{
+    background-color: #477FA8;
+}
+.circleTheme.yellow{
+    background-color: #C18B2C;
+}
+.circleTheme.mono{
+    background-color: #55514D;
 }
 
 

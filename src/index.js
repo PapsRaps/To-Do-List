@@ -47,6 +47,22 @@ import domController from './modules/domController.js'
         });
     });
 
+    const themeToggle = document.querySelector(".theme-toggle");
+    const themeOptions = document.querySelector(".theme-options");
+
+    const redTheme = document.getElementById('redTheme');
+    redTheme.addEventListener('click',()=>domController.themeSwitching('red'));
+    const blueTheme = document.getElementById('blueTheme');
+    blueTheme.addEventListener('click',()=>domController.themeSwitching('blue'));
+    const yellowTheme = document.getElementById('yellowTheme');
+    yellowTheme.addEventListener('click',()=>domController.themeSwitching('yellow'));
+    const monochromeTheme = document.getElementById('monochromeTheme');
+    monochromeTheme.addEventListener('click',()=>domController.themeSwitching('monochrome'));
+
+    themeToggle.addEventListener("click", () => {
+        themeOptions.classList.toggle("show");
+    });
+
     domController.initialPageLoad();
 })()
 

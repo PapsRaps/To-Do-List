@@ -2,6 +2,8 @@ import todoList from './todolist.js'
 
 import { format, parseISO } from 'date-fns';
 
+import { themes, applyTheme } from './themeSwitching.js';
+
 const domController = (()=>{
     const addProjectModal = document.getElementById('newProjectModal');
     const editProjectModal = document.getElementById('editProjectModal');
@@ -356,9 +358,26 @@ const domController = (()=>{
         changeTaskDisplay();
     }
 
+    function themeSwitching(theme){
+        if(theme === 'red'){
+            applyTheme(themes.red);
+        }else if(theme === 'blue'){
+            applyTheme(themes.blue);
+        }else if(theme === 'yellow'){
+            applyTheme(themes.yellow);
+        }else if(theme === 'monochrome'){
+            applyTheme(themes.monochrome);
+        }
+
+        localStorage.setItem('theme', theme);
+    }
+
     function initialPageLoad(){
         todoList.loadFromStorage();
         changeWholeScreen();
+
+        const savedTheme = localStorage.getItem('theme') || 'red';
+        applyTheme(themes[savedTheme]);
     }
 
     return{
@@ -370,6 +389,7 @@ const domController = (()=>{
         initialPageLoad,
         addTask,
         changeShowStatus,
+        themeSwitching,
     }
 
 })();

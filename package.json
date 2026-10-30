@@ -9,7 +9,7 @@
     "build": "webpack --config webpack/webpack.prod.js",
     "push": "git checkout main && git push origin main",
     "sync": "git checkout main && git pull origin main",
-    "deploy": "git checkout gh-pages && git merge main --no-edit && npm run build && git add dist -f && git commit -m \"Deployment commit\" && git subtree push --prefix dist origin gh-pages && git checkout main"
+    "deploy": "git checkout main && npm run build && git checkout gh-pages && git merge main --no-edit && git add dist -f && (git diff --cached --quiet || git commit -m \"Deployment commit\") && git subtree split --prefix dist -b deploy-branch && git push origin deploy-branch:gh-pages --force && git branch -D deploy-branch && git checkout main"
   },
   "repository": {
     "type": "git",
