@@ -54,6 +54,10 @@ export default class Task{
         }
     }
 
+    set status(curStatus){
+        this.#status = curStatus;
+    }
+
     get taskName(){
         return this.#taskName;
     }
@@ -83,6 +87,17 @@ export default class Task{
             this.#status = 'complete'
         }else if(this.#status === 'complete'){
             this.#status = 'incomplete'
+        }
+    }
+
+    toJSON(){
+        return{
+            'taskId' : this.#taskId,
+            'taskName' : this.#taskName,
+            'taskDesc' : this.#taskDesc,
+            'taskDueDate' : this.#taskDueDate,
+            'taskPrio' : this.#taskPrio,
+            'status' : this.#status,
         }
     }
 }

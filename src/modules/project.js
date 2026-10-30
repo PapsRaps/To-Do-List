@@ -55,6 +55,12 @@ export default class Project{
         this.#tasks.push(task)
     }
 
+    loadTask(taskId,taskName, taskDesc, taskDueDate, taskPrio, taskStatus){
+        const task = new Task(taskId,taskName, taskDesc, taskDueDate, taskPrio)
+        task.status = taskStatus;
+        this.#tasks.push(task)
+    }
+
     getTasks(){
         return [...this.#tasks];
     }
@@ -96,5 +102,14 @@ export default class Project{
         if (index === -1) return;
 
         this.#tasks[index].toggleStatus();
+    }
+
+    toJSON(){
+        return{
+            'projectId' : this.#projectId,
+            'projectName' : this.#projectName,
+            'projectDesc' : this.#projectDesc,
+            'tasks' : this.#tasks,
+        }
     }
 }
